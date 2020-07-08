@@ -30,7 +30,7 @@ function start() {
         name: "whatNext",
         type: "list",
         message: "What would you like to do?",
-        choices: ["Add departments", "Add employees", "Add roles", "View departments", "View roles", "View employees", "Update employee roles"]
+        choices: ["Add departments", "Add roles", "Add employees", "View departments", "View roles", "View employees", "Update employee roles"]
       })
       .then(function(answer) {
         // based on their answer, either call the bid or the post functions
@@ -123,6 +123,35 @@ function addRoles(){
 }
 //add employees
 function addEmployees(){
+    inquirer
+    .prompt([
+      {
+        name: "first",
+        type: "input",
+        message: "What is the new employee's first name?"
+      },
+      {
+        name: "last",
+        type: "input",
+        message: "What is the new employee's last name?"
+      },
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: answer.first,
+          last_name: answer.last
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your new employee was added successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
 
 }
 //view departments
