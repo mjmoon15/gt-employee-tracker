@@ -63,8 +63,31 @@ function start() {
 
 //add departments
 function addDepartments(){
-
+    inquirer
+    .prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "What department would you like to add?"
+      },
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          name: answer.name,
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your department was added successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
 }
+
 //add roles
 function addRoles(){
 
@@ -87,5 +110,5 @@ function viewEmployees(){
 }
 //update employee roles
 function updateEmployeeRoles(){
-    
+
 }
