@@ -90,6 +90,35 @@ function addDepartments(){
 
 //add roles
 function addRoles(){
+    inquirer
+    .prompt([
+      {
+        name: "title",
+        type: "input",
+        message: "What role would you like to add?"
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What salary will the new role have?"
+      },
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO role SET ?",
+        {
+          title: answer.title,
+          salary: answer.salary
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your role was added successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
 
 }
 //add employees
