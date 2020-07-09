@@ -23,7 +23,7 @@ connection.connect(function(err) {
 })
 
 
-//ask questions about the user wants to do
+//ask questions about what the user wants to do
 function start() {
     inquirer
       .prompt({
@@ -33,7 +33,7 @@ function start() {
         choices: ["Add departments", "Add roles", "Add employees", "View departments", "View roles", "View employees", "Update employee roles"]
       })
       .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
+        // based on their answer, move to next function
         if (answer.whatNext === "Add departments") {
           addDepartments();
         }
@@ -81,7 +81,7 @@ function addDepartments(){
         function(err) {
           if (err) throw err;
           console.log("Your department was added successfully!");
-          // re-prompt the user for if they want to bid or post
+          // re-prompt the user to choose from possible actions
           start();
         }
       );
@@ -102,6 +102,11 @@ function addRoles(){
         type: "input",
         message: "What salary will the new role have?"
       },
+      {
+        name: "department_id",
+        type: "input",
+        message: "What is the new role's department ID number?"
+      },
     ])
     .then(function(answer) {
       // when finished prompting, insert a new item into the db with that info
@@ -109,12 +114,13 @@ function addRoles(){
         "INSERT INTO role SET ?",
         {
           title: answer.title,
-          salary: answer.salary
+          salary: answer.salary,
+          department_id: answer.department_id,
         },
         function(err) {
           if (err) throw err;
           console.log("Your role was added successfully!");
-          // re-prompt the user for if they want to bid or post
+          // re-prompt the user to choose from possible actions
           start();
         }
       );
@@ -135,6 +141,16 @@ function addEmployees(){
         type: "input",
         message: "What is the new employee's last name?"
       },
+      {
+        name: "role_id",
+        type: "input",
+        message: "What is the new employee's role ID?"
+      },
+      {
+        name: "manager_id",
+        type: "input",
+        message: "What is the new employee's manager's ID, if applicable?"
+      },
     ])
     .then(function(answer) {
       // when finished prompting, insert a new item into the db with that info
@@ -142,12 +158,15 @@ function addEmployees(){
         "INSERT INTO employee SET ?",
         {
           first_name: answer.first,
-          last_name: answer.last
+          last_name: answer.last,
+          role_id: answer.role_id,
+          manager_id: answer.manager_id 
+
         },
         function(err) {
           if (err) throw err;
           console.log("Your new employee was added successfully!");
-          // re-prompt the user for if they want to bid or post
+          // re-prompt the user to choose from possible actions
           start();
         }
       );
