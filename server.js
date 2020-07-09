@@ -201,4 +201,23 @@ function viewEmployees() {
   });
 }
 //update employee roles
-function updateEmployeeRoles() {}
+function updateEmployeeRoles() {
+    console.log("Updating all employee roles...\n");
+  var query = connection.query(
+    "UPDATE role SET ?",
+    [
+      {
+        quantity: 100
+      },
+      {
+        flavor: "Rocky Road"
+      }
+    ],
+    function(err, res) {
+      if (err) throw err;
+      console.log(res.affectedRows + " products updated!\n");
+      // Call deleteProduct AFTER the UPDATE completes
+      deleteProduct();
+    }
+  );
+}
