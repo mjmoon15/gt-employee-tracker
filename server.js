@@ -162,7 +162,7 @@ function addEmployees() {
       {
         name: "manager_id",
         type: "input",
-        message: "What is the new employee's manager's ID, if applicable?",
+        message: "What is the new employee's manager's ID?",
       },
     ])
     .then(function (answer) {
