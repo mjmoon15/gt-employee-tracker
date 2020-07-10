@@ -4,7 +4,7 @@
   
   ## Description
   
-  This application uses node, express, path, and fs to write, save, and delete notes on an html page. 
+  This application uses mysql and inquirer to create and manage an employee database CLI. 
   
   ---
   
