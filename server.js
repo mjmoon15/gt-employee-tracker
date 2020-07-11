@@ -40,6 +40,7 @@ function start() {
         "Update employee roles",
         "Delete departments",
         "Delete roles",
+        // "Delete employees",
         "Exit",
       ],
     })
@@ -66,7 +67,7 @@ function start() {
       } else if (answer.whatNext === "Delete roles") {
         deleteRoles();
       } else if (answer.whatNext === "Delete employees") {
-        deleteRoles();
+        deleteEmployees();
       } else if (answer.whatNext === "Exit") {
         connection.end();
       } else {
@@ -234,37 +235,55 @@ function viewAll() {
 }
 //update employee roles
 function updateEmployeeRoles() {
-  connection.query("SELECT * FROM role", function (err, res) {
+  connection.query("SELECT * FROM employee", function (err, res) {
     console.log("Updating roles...\n");
-    const roleArray = res.map((item) => item.title);
+    const employeeArray = res.map(
+      (item) => item.first_name + " " + item.last_name
+    );
     inquirer
       .prompt([
         {
-          name: "role_id",
+          name: "name",
           type: "list",
-          message: "What employee role would you like to update?",
-          choices: roleArray,
+          message: "Which employee's role would you like to update?",
+          choices: employeeArray,
         },
       ])
-      .then(function (answer) {
-        console.log("Selected employee", answer);
-        let selectedRoleId = {};
-        for (let i = 0; i < res.length; i++) {
-          if (res[i].title === answer.role_id) {
-            selectedRoleId = res[i];
-          }
-          console.log("selected role ID ", selectedRoleId.id);
-          connection.query(
-            "UPDATE employee SET role_id = ? WHERE id = ?",
-            [selectedRoleId.id, answer.name],
-            function (err, res) {
-              if (err) throw err;
-              console.log(res.affectedRows + " role updated!\n");
-              // go back to where it all started
-              start();
-            }
-          );
-        }
+      .then(function (res) {
+        connection.query("SELECT * FROM role", function (err, results) {
+          const roleArray = results.map((item) => item.title);
+          console.log(`You are updating ${res.name}'s role.`);
+
+          inquirer
+            .prompt([
+              {
+                name: "title",
+                type: "list",
+                message: "Which role would you like to change to?",
+                choices: roleArray,
+              },
+            ])
+            .then(function (res) {
+              console.log("role selected", res);
+              connection.query(
+                "UPDATE role SET title = ? WHERE id = ?",
+                [res.title, results.id],
+                function (err, answer) {
+                    if (err) throw err;
+                    console.log(answer)
+                  //     function (err, res) {
+                  //       if (err) throw err;
+                  //       console.table(res.affectedRows + " role updated!\n");
+                  //       // go back to where it all started
+                        // start();
+                }
+              );
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+          
+        });
       });
   });
 }
@@ -295,7 +314,7 @@ function deleteDepartments() {
           res
         ) {
           if (err) throw err;
-          console.log(res.affectedRows + " deleted department!\n");
+          console.table(res.affectedRows + " deleted department!\n");
           start();
         });
       });
@@ -304,9 +323,10 @@ function deleteDepartments() {
 
 //delete roles
 function deleteRoles() {
+  console.log("Warning");
   connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
-    const roleArray = res.map((item) => item.name);
+    const roleArray = res.map((item) => item.title);
     inquirer
       .prompt([
         {
@@ -320,7 +340,7 @@ function deleteRoles() {
         console.log("role to delete", answer);
         let selectedRoleId = {};
         for (let i = 0; i < res.length; i++) {
-          if (res[i].name === answer.name) {
+          if (res[i].title === answer.name) {
             selectedRoleId = res[i];
           }
         }
@@ -330,12 +350,14 @@ function deleteRoles() {
           res
         ) {
           if (err) throw err;
-          console.log(res.affectedRows + " deleted role!\n");
+          console.table(res.affectedRows + " deleted role!\n");
           start();
         });
       })
-      .catch(function(err){
-          console.log(err)
-      })
+      .catch(function (err) {
+        console.log(err);
+      });
   });
 }
+
+
