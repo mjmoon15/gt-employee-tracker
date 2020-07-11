@@ -29,6 +29,8 @@
   ## Usage
 
   ![Employee tracker demo](Assets/finished-employee-tracker.gif "Employee tracker demo.")
+
+  [The demo video can also be accessed here](https://drive.google.com/file/d/1p4WDe076_q7JzIE7_Uj7RT9uR7tifwpJ/view). 
   
   From the command line, run node server.js and follow prompts. 
 
