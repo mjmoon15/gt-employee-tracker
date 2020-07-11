@@ -22,15 +22,21 @@
   ## Installation 
 
   
-  [Fork the repo from github](https://github.com/mjmoon15/gt-employee-tracker). Run npm install. Open the command line to access the app.
+  [Fork the repo from github](https://github.com/mjmoon15/gt-employee-tracker). Install npm dependencies. Update the mysql password in server.js. Open the command line to access the app.
   
   ---
 
   ## Usage
-  
-  From the command line, run node app.js and follow prompts. 
 
-  ![Note taker finished product](public/assets/note-taker-index.png "Index.html start page for note taker.")
+  ![Employee tracker demo](Assets/finished-employee-tracker.gif "Employee tracker demo.")
+
+  [The demo video can also be accessed here](https://drive.google.com/file/d/1p4WDe076_q7JzIE7_Uj7RT9uR7tifwpJ/view). 
+  
+  From the command line, run node server.js and follow prompts. 
+
+  ![Employee tracker finished product](Assets/employee-tracker1.png "CLI start menu.")
+
+  ![Employee tracker employee list view](Assets/employee-tracker2.png "CLI employee list.")
 
   ---
 
